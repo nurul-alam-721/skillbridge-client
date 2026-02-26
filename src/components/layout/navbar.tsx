@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -37,28 +36,11 @@ const MENU_ITEMS = [
 ];
 
 export function Navbar({ className }: NavbarProps) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      try {
-        const session = await authClient.getSession();
-        const u = session?.data?.user as User | undefined;
-        setUser(u ?? null);
-      } catch {
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSession();
-  }, []);
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user as User | undefined;
 
   const handleLogout = async () => {
     await authClient.signOut();
-    setUser(null);
   };
 
   const getDashboardLink = () => {
@@ -100,7 +82,7 @@ export function Navbar({ className }: NavbarProps) {
         <div className="flex items-center gap-3">
           <ModeToggle />
 
-          {!loading &&
+          {!isPending &&
             (user ? (
               <>
                 <Button variant="ghost" asChild>
@@ -144,7 +126,7 @@ export function Navbar({ className }: NavbarProps) {
                   </Link>
                 ))}
 
-                {!loading &&
+                {!isPending &&
                   (user ? (
                     <>
                       <Link href={getDashboardLink()}>Dashboard</Link>
