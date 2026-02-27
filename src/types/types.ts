@@ -1,4 +1,6 @@
 export type UserRole = "STUDENT" | "TUTOR" | "ADMIN";
+export type UserStatus = "ACTIVE" | "BANNED";
+export type BookingStatus = "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
 
 export type User = {
   id: string;
@@ -7,3 +9,4 @@ export type User = {
   role: UserRole;
   image?: string;
 };
+

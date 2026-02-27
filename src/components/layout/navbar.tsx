@@ -21,8 +21,8 @@ import {
 
 import { ModeToggle } from "./ModeToggle";
 import { authClient } from "@/lib/auth-client";
-import { User } from "@/types/user";
-import { Roles } from "@/constant/roles";
+import { User } from "@/types/types";
+import { Roles } from "@/constant/Roles";
 
 interface NavbarProps {
   className?: string;

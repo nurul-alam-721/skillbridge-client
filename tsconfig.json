@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/types/user.ts"  ],
+, "src/types/ypes.ts"  ],
   "exclude": ["node_modules"]
 }

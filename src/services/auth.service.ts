@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import { User } from "@/types/user";
+import { User } from "@/types/ypes";
 
 export interface SessionResponse {
   user: User;

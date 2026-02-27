@@ -1,13 +1,5 @@
 import { api } from "@/lib/axios";
-
-// ─── Enums ────────────────────────────────────────────────────────────────────
-
-export type Role = "STUDENT" | "TUTOR" | "ADMIN";
-export type UserStatus = "ACTIVE" | "BANNED";
-export type BookingStatus = "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
-
-// ─── Models ───────────────────────────────────────────────────────────────────
-
+import { UserRole, UserStatus } from "@/types/types";
 export interface User {
   id: string;
   name: string | null;
@@ -15,7 +7,7 @@ export interface User {
   emailVerified: boolean;
   image: string | null;
   phone: string | null;
-  role: Role;
+  role: UserRole;
   status: UserStatus;
   createdAt: string;
   updatedAt: string;
@@ -40,7 +32,7 @@ export interface AvailabilitySlot {
 
 export interface Review {
   id: string;
-  rating: string; // backend returns Decimal as string e.g. "4.5"
+  rating: string; 
   comment: string | null;
   studentId: string;
   tutorProfileId: string;
@@ -59,13 +51,12 @@ export interface TutorProfile {
   totalReviews: number;
   createdAt: string;
   updatedAt: string;
-  user: Pick<User, "id" | "name" | "email" | "image">;
+ user: Pick<User, "id" | "name" | "email" | "image" | "phone">;
   category: Category;
   availability?: AvailabilitySlot[];
   reviews?: Review[];
 }
 
-// ─── Request shapes ───────────────────────────────────────────────────────────
 
 export interface TutorsQuery {
   search?: string;
@@ -86,10 +77,6 @@ export interface TutorsResponse {
   };
 }
 
-export interface CategoriesResponse {
-  categories: Category[]; 
-}
-
 export interface UpdateProfilePayload {
   bio?: string;
   hourlyRate?: number;
@@ -103,23 +90,20 @@ export interface UpdateAvailabilityPayload {
   endTime: string;
 }
 
-// ─── Service ──────────────────────────────────────────────────────────────────
 
 export const tutorService = {
   async getAll(query?: TutorsQuery): Promise<TutorsResponse> {
     const { data } = await api.get("/api/tutors", { params: query });
-    return data; // { success, message, tutors, pagination }
+    return data; 
   },
 
   async getById(id: string): Promise<TutorProfile> {
     const { data } = await api.get(`/api/tutors/${id}`);
-    return data;
+    return data.data;
   },
 
-  // Returns bare array OR wrapped — handle both safely
   async getCategories(): Promise<Category[]> {
     const { data } = await api.get("/api/categories");
-    // If backend returns { categories: [...] }
     if (Array.isArray(data)) return data;
     if (Array.isArray(data.categories)) return data.categories;
     if (Array.isArray(data.data)) return data.data;

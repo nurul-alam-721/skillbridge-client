@@ -9,7 +9,7 @@ import { useForm } from "@tanstack/react-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
-import { User } from "@/types/user";
+import { User } from "@/types/ypes";
 import { Roles } from "@/constant/roles";
 import { handleGoogleLogin } from "@/hooks/handleGoogleLogin";
 
