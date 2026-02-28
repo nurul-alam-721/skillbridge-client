@@ -8,10 +8,10 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "@tanstack/react-form";
 import * as z from "zod";
 import { toast } from "sonner";
-import { authClient } from "@/lib/auth-client";
-import { User } from "@/types/ypes";
-import { Roles } from "@/constant/roles";
+import { authClient } from "@/lib/auth-client";;
 import { handleGoogleLogin } from "@/hooks/handleGoogleLogin";
+import { User } from "@/types/types";
+import { Roles } from "@/constant/Roles";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -32,11 +32,13 @@ function GoogleIcon() {
 export function LoginForm() {
   const router = useRouter();
 
-  const redirectByRole = (user: User) => {
-    if (user.role === Roles.admin) router.push("/admin/dashboard");
-    else if (user.role === Roles.tutor) router.push("/tutor/dashboard");
-    else router.push("/");
-  };
+const redirectByRole = (user: User) => {
+  document.cookie = `user-role=${user.role}; path=/; max-age=604800; SameSite=Lax`;
+
+  if (user.role === Roles.admin) router.push("/admin");
+  else if (user.role === Roles.tutor) router.push("/tutor/dashboard");
+  else router.push("/");
+};
 
   const form = useForm({
     defaultValues: { email: "", password: "" },

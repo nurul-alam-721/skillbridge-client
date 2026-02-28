@@ -40,8 +40,10 @@ export function Navbar({ className }: NavbarProps) {
   const user = session?.user as User | undefined;
 
   const handleLogout = async () => {
-    await authClient.signOut();
-  };
+  await authClient.signOut();
+  document.cookie = "user-role=; path=/; max-age=0";
+  window.location.href = "/";
+};
 
   const getDashboardLink = () => {
     if (!user) return "/";
